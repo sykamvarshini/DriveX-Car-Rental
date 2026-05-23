@@ -158,7 +158,7 @@ PORT=5000
 
 # 👨‍💻 Author
 
-Developed by Varshini
+Developed by Sykam Varshini
 
 ---
 
