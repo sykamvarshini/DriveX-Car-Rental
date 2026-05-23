@@ -1,0 +1,70 @@
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import Navbar from '../components/Navbar';
+
+const Booking = () => {
+  const location = useLocation();
+
+  const car = location.state;
+
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  const handleBooking = async () => {
+    try {
+      const bookingData = {
+        car: car._id,
+        startDate,
+        endDate,
+        totalAmount: car.pricePerDay
+      };
+
+      await axios.post(
+        'http://localhost:5000/api/bookings',
+        bookingData
+      );
+
+      alert('Booking Successful');
+    } catch (error) {
+      console.log(error);
+      alert('Booking Failed');
+    }
+  };
+
+  return (
+    <>
+      <Navbar />
+
+      <div className='booking-page'>
+        <div className='booking-card'>
+          <img src={car.image} alt={car.name} />
+
+          <div className='booking-content'>
+            <h1>{car.name}</h1>
+
+            <p>{car.brand}</p>
+
+            <h2>₹{car.pricePerDay} / day</h2>
+
+            <input
+              type='date'
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+
+            <input
+              type='date'
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+
+            <button onClick={handleBooking}>
+              Confirm Booking
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Booking;
