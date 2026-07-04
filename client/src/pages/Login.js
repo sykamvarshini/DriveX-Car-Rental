@@ -13,7 +13,7 @@ const Login = () => {
 
     try {
       const { data } = await axios.post(
-        'http://localhost:5000/api/auth/login',
+        "https://drivex-car-rental.onrender.com/api/bookings",
         {
           email,
           password

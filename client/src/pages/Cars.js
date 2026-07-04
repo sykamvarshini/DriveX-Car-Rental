@@ -27,7 +27,7 @@ const Cars = () => {
   const fetchCars = async () => {
     try {
       const { data } = await axios.get(
-        'http://localhost:5000/api/cars'
+        "https://drivex-car-rental.onrender.com/api/cars"
       );
 
       setCars(data);

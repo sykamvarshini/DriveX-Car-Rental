@@ -28,7 +28,7 @@ const AddCar = () => {
 
     try {
       await axios.post(
-        'http://localhost:5000/api/cars',
+        'https://drivex-car-rental.onrender.com/api/cars',
         carData
       );
 
