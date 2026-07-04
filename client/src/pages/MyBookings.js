@@ -11,11 +11,17 @@ const MyBookings = () => {
 
   const fetchBookings = async () => {
     try {
+      const user = JSON.parse(localStorage.getItem('user'));
+
       const { data } = await axios.get(
-        'http://localhost:5000/api/bookings'
+        'https://drivex-car-rental.onrender.com/api/bookings'
       );
 
-      setBookings(data);
+      const myBookings = data.filter(
+        (booking) => booking.user?._id === user?._id
+      );
+
+      setBookings(myBookings);
     } catch (error) {
       console.log(error);
     }
@@ -25,38 +31,46 @@ const MyBookings = () => {
     <>
       <Navbar />
 
-      <div className='bookings-page'>
+      <div className="bookings-page">
         <h1>My Bookings</h1>
 
-        <div className='bookings-grid'>
-          {bookings.map((booking) => (
-            <div className='booking-box' key={booking._id}>
-              <img
-                src={booking.car?.image}
-                alt={booking.car?.name}
-              />
+        <div className="bookings-grid">
+          {bookings.length > 0 ? (
+            bookings.map((booking) => (
+              <div className="booking-box" key={booking._id}>
+                <img
+                  src={booking.car?.image}
+                  alt={booking.car?.name}
+                />
 
-              <div className='booking-info'>
-                <h2>{booking.car?.name}</h2>
+                <div className="booking-info">
+                  <h2>{booking.car?.name}</h2>
 
-                <p>{booking.car?.brand}</p>
+                  <p>{booking.car?.brand}</p>
 
-                <h3>₹{booking.totalAmount}</h3>
+                  <h3>₹{booking.totalAmount}</h3>
 
-                <span>
-                  {new Date(
-                    booking.startDate
-                  ).toLocaleDateString()}
-                </span>
+                  <p>
+                    <strong>From:</strong>{' '}
+                    {new Date(
+                      booking.startDate
+                    ).toLocaleDateString()}
+                  </p>
 
-                <span>
-                  {new Date(
-                    booking.endDate
-                  ).toLocaleDateString()}
-                </span>
+                  <p>
+                    <strong>To:</strong>{' '}
+                    {new Date(
+                      booking.endDate
+                    ).toLocaleDateString()}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <h2 style={{ textAlign: 'center' }}>
+              No Bookings Found
+            </h2>
+          )}
         </div>
       </div>
     </>

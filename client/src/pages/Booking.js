@@ -5,7 +5,6 @@ import Navbar from '../components/Navbar';
 
 const Booking = () => {
   const location = useLocation();
-
   const car = location.state;
 
   const [startDate, setStartDate] = useState('');
@@ -13,7 +12,15 @@ const Booking = () => {
 
   const handleBooking = async () => {
     try {
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      if (!user) {
+        alert('Please login first');
+        return;
+      }
+
       const bookingData = {
+        user: user._id,
         car: car._id,
         startDate,
         endDate,
@@ -21,13 +28,13 @@ const Booking = () => {
       };
 
       await axios.post(
-        "https://drivex-car-rental.onrender.com/api/bookings",
+        'https://drivex-car-rental.onrender.com/api/bookings',
         bookingData
       );
 
       alert('Booking Successful');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert('Booking Failed');
     }
   };
@@ -36,11 +43,11 @@ const Booking = () => {
     <>
       <Navbar />
 
-      <div className='booking-page'>
-        <div className='booking-card'>
+      <div className="booking-page">
+        <div className="booking-card">
           <img src={car.image} alt={car.name} />
 
-          <div className='booking-content'>
+          <div className="booking-content">
             <h1>{car.name}</h1>
 
             <p>{car.brand}</p>
@@ -48,12 +55,14 @@ const Booking = () => {
             <h2>₹{car.pricePerDay} / day</h2>
 
             <input
-              type='date'
+              type="date"
+              value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
             />
 
             <input
-              type='date'
+              type="date"
+              value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             />
 
