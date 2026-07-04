@@ -13,48 +13,49 @@ const Login = () => {
 
     try {
       const { data } = await axios.post(
-        "https://drivex-car-rental.onrender.com/api/bookings",
+        "https://drivex-car-rental.onrender.com/api/auth/login",
         {
           email,
           password
         }
       );
 
-      localStorage.setItem('token', data.token);
-      
-      localStorage.setItem(
-        'user',
-        JSON.stringify(data.user)
-      );
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-      alert('Login Successful');
+      alert("Login Successful");
 
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      alert('Invalid Credentials');
+      console.error(error);
+      alert(
+        error.response?.data?.message || "Invalid Credentials"
+      );
     }
   };
 
   return (
-    <div className='auth-container'>
-      <form className='auth-form' onSubmit={handleSubmit}>
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
         <h1>Login</h1>
 
         <input
-          type='email'
-          placeholder='Enter Email'
+          type="email"
+          placeholder="Enter Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
-          type='password'
-          placeholder='Enter Password'
+          type="password"
+          placeholder="Enter Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
-        <button type='submit'>Login</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
